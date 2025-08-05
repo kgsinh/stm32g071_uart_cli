@@ -1,0 +1,29 @@
+# Ignore build outputs and IDE temp files
+Debug/
+build/
+*.o
+*.d
+*.elf
+*.elf-debug
+*.bin
+*.hex
+*.map
+*.lst
+*.srec
+*.dep
+*.log
+
+# IDE files
+.settings/
+.vscode/
+*.suo
+*.user
+*.swp
+*.DS_Store
+
+# STM32CubeMX auto-generated files (if you want to exclude them)
+*.ioc
+
+# General hidden/OSX files
+._*
+Thumbs.db
