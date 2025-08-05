@@ -1,0 +1,1 @@
+# stm32g071_uart_cli
