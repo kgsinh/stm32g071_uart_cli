@@ -8,7 +8,7 @@ int main(void) {
 	green_led_off();
 	blue_led_off();
 	printf("UART CLI Application\n\r");
-//This is test 2 comment
+//This is test 3 comment
 	while (1) {
 		if (UART_read_cmd())
 		{
