@@ -3,12 +3,14 @@
 #include "led.h"
 
 int main(void) {
+	memset(command, 0, CMD_SIZE);
 	UARTinit();
 	led_init();
 	green_led_off();
 	blue_led_off();
 	printf("UART CLI Application\n\r");
-//This is another test comment
+
+
 	while (1) {
 		if (UART_read_cmd())
 		{
