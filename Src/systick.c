@@ -6,8 +6,7 @@
 #define CTRL_CLKSRC        (1U<<2)
 #define CTRL_COUNTFLAG     (1U<<16)
 
-void systickDelayus(int delay)
-{
+void systickDelayus(int delay) {
 	/*Reload with no. of clocks per us*/
 	SysTick->LOAD = SYSTICK_LOAD_VAL_US;
 
@@ -17,16 +16,15 @@ void systickDelayus(int delay)
 	/*Enable systick and select internal clk src*/
 	SysTick->CTRL = CTRL_ENABLE | CTRL_CLKSRC;
 
-	for(int i=0;i<delay;i++)
-	{
+	for (int i = 0; i < delay; i++) {
 		/*wait until the count flag is set*/
-		while(!(SysTick->CTRL&CTRL_COUNTFLAG));
+		while (!(SysTick->CTRL & CTRL_COUNTFLAG))
+			;
 	}
 	SysTick->CTRL = 0;
 }
 
-void systickDelayms(int delay)
-{
+void systickDelayms(int delay) {
 	/*Reload with no. of clocks per ms*/
 	SysTick->LOAD = SYSTICK_LOAD_VAL_MS;
 
@@ -36,10 +34,10 @@ void systickDelayms(int delay)
 	/*Enable systick and select internal clk src*/
 	SysTick->CTRL = CTRL_ENABLE | CTRL_CLKSRC;
 
-	for(int i=0;i<delay;i++)
-	{
+	for (int i = 0; i < delay; i++) {
 		/*wait until the count flag is set*/
-		while(!(SysTick->CTRL&CTRL_COUNTFLAG));
+		while (!(SysTick->CTRL & CTRL_COUNTFLAG))
+			;
 	}
 	SysTick->CTRL = 0;
 }
