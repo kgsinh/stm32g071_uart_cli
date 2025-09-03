@@ -9,9 +9,6 @@ int main(void) {
 	blue_led_off();
 	printf("UART CLI Application\n\r");
 
-
-	//printf("Received command: %s\n\r", command);
-
 	while (1) {
 		if (UART_read_cmd())
 		{
@@ -36,7 +33,6 @@ int main(void) {
 		}
 		}
 	}
-
 
 	return 0;
 }
