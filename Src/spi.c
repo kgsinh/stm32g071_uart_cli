@@ -2,6 +2,8 @@
 
 #define SPI1EN  (1U << 12)
 #define GPIOAEN (1U << 0)
+#define SR_TXE  (1U << 1)
+#define SR_BSY  (1U << 7)
 
 //PA5 - SCK
 //PA6 - MISO
@@ -73,4 +75,55 @@ void spi1_config(void)
 	SPI1->CR1 |= (1U << 6); //SPE
 }
 
+void spi1_tx(uint8_t *data, uint32_t size)
+{
+	uint32_t i = 0;
+	uint8_t dummy_read;
+
+	while (i < size)
+	{
+		/*wait until txe is set*/
+		while (!(SPI1->SR & SR_TXE));
+
+		/*send data*/
+		SPI1->DR = data[i];
+		i++;
+	}
+	/*wait until txe is set*/
+	while (!(SPI1->SR & SR_TXE));
+
+	/*wait for BUSY flag to reset*/
+	while (SPI1->SR & SR_BSY);
+
+	/*Clear OVR flag*/
+	dummy_read = SPI1->DR;
+	dummy_read = SPI1->SR;
+}
+
+void spi1_rx(uint8_t *data, uint32_t size)
+{
+	while(size)
+	{
+		/*send dummy data*/
+		SPI1->DR = 0xFF;
+
+		/*wait until rxne is set*/
+		while (!(SPI1->SR & (1U << 0)));
+
+		/*read data*/
+		*data = SPI1->DR;
+		data++;
+		size--;
+	}
+}
+
+void spi1_ss_enable(void)
+{
+	GPIOA->ODR &= ~(1U << 9); //SS LOW
+}
+
+void spi1_ss_disable(void)
+{
+	GPIOA->ODR |= (1U << 9); //SS HIGH
+}
 
