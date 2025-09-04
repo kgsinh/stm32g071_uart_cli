@@ -17,7 +17,7 @@
 
 #define CMD_SIZE 64
 
-extern uint8_t command[CMD_SIZE];
+extern char command[CMD_SIZE];
 extern volatile bool command_ready;
 
 

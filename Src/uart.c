@@ -1,6 +1,6 @@
 #include "uart.h"
 
-uint8_t command[CMD_SIZE];
+char command[CMD_SIZE];
 volatile bool command_ready = false;
 
 static void UART_TX(char data);
