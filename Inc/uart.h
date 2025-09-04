@@ -18,6 +18,7 @@
 #define CMD_SIZE 64
 
 extern uint8_t command[CMD_SIZE];
+extern volatile bool command_ready;
 
 
 /**
@@ -26,15 +27,6 @@ extern uint8_t command[CMD_SIZE];
  *
  */
 void UARTinit(void);
-
-/**
- * @fn uint8_t UART_RX(void)
- * @brief This function will receive the data
- *
- * @return uint8_t
- */
-uint8_t UART_RX(void);
-
 
 /**
  * @fn void UART_TX_STR(char*)

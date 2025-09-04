@@ -1,16 +1,20 @@
 #include "uart.h"
 
-
 uint8_t command[CMD_SIZE];
+volatile bool command_ready = false;
+
 static void UART_TX(char data);
 
 /*Retargeted printf*/
-int __io_putchar(char data) {
+int __io_putchar(char data)
+{
 	UART_TX(data);
+
 	return data;
 }
 
-void UARTinit(void) {
+void UARTinit(void)
+{
 	// 1 start bit, 8 Data bits, 1 Stop bit, Even Parity
 	RCC->APBENR1 |= (1 << 17); //Enable USART2 clock
 	RCC->IOPENR |= (1 << 0);  //Enable GPIOA clock
@@ -23,38 +27,28 @@ void UARTinit(void) {
 	GPIOA->MODER |= (2 << 6); //PA3(10) AS ALTERNATE FNC
 	GPIOA->AFR[0] |= (1 << 12); // AF1 for PA3 AS UART RX
 	USART2->CR1 |= (1 << 2); //RECEIVE ENABLED
+	USART2->CR1 |= (1 << 5); //RXNEIE ENABLED
+	/*Enable UART2 interrupt in NVIC*/
+	NVIC_EnableIRQ(USART2_IRQn);
 	USART2->CR1 |= (1 << 0); //USART ENABLED
 	//NVIC->ISER[0] |= (1<<28); //POSITION 28
 
 }
 
-uint8_t UART_RX(void) {
-	/**Wait until RXNE is set**/
-	while (!((USART2->ISR) & (1 << 5)))
-		;
-	return (uint8_t) (USART2->RDR);
-}
-
-static void UART_TX(char data) {
-	while (!((USART2->ISR) & (1 << 6)))
-		;
+static void UART_TX(char data)
+{
+	while (!((USART2->ISR) & (1 << 6)));
 	USART2->TDR = data;
 }
 
-bool UART_read_cmd(void) {
-	static uint8_t index = 0;
-	uint8_t rx_data = UART_RX();
-
-	if (rx_data == '\r' || rx_data == '\n') {
-		command[index] = '\0'; //Null terminate the command
-		index = 0; //Reset index for next command
-		return true; //Command is ready
-	} else {
-		if (index < CMD_SIZE - 1) { //Leave space for null terminator
-			command[index++] = rx_data;
-		}
-		return false; //Command not complete yet
+bool UART_read_cmd(void)
+{
+	if (command_ready)
+	{
+		command_ready = false;  // Clear the flag
+		return true;
 	}
-}
 
+	return false;
+}
 
