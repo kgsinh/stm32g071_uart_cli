@@ -19,8 +19,8 @@ Supports simple commands such as toggling onboard LEDs using a serial terminal.
 
 ## Hardware Setup
 - **MCU:** STM32G071RB (Nucleo board)
-- **UART:** USART2 @ 115200 baud
-- **LEDs:** Onboard green and blue LEDs connected to GPIO
+- **UART:** USART2 @ 19200 baud
+- **LEDs:** green and blue LEDs connected to GPIO
 
 ---
 

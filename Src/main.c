@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include"stm32g071xx.h"
 #include "uart.h"
 #include "systick.h"
 #include "led.h"
