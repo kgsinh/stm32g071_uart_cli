@@ -7,6 +7,7 @@
 #include "systick.h"
 #include "led.h"
 #include "cli.h"
+#include "spi.h"
 
 int main(void)
 {
@@ -14,6 +15,8 @@ int main(void)
 
 	UARTinit();
 	led_init();
+	spi1_gpio_init();
+	spi1_config();
 
 	green_led_off();
 	blue_led_off();

@@ -49,20 +49,23 @@ Supports simple commands such as toggling onboard LEDs using a serial terminal.
 - STM32G071 Nucleo board
 - Jumper wires for connecting LED pins if necessary
 
-Clone the repository:
+### Cloning the Repository
 ```bash
 git clone
+
 
 ### Running the CLI
 1. Open your serial terminal and connect to the appropriate COM port at 19200 baud, 8 data bits, no parity, 1 stop bit.
 2. Type `led on` to turn the LED on and `led off` to turn it off.
 3. Press Enter after typing each command.
 4. You should see feedback in the terminal confirming the command execution.
+
 ### Example Commands
  ```
    led on
    led off
  ```
+
 ### Extending the CLI
 To add more commands, modify the `cli.c` file and update the command table in `cli.h`. Implement the corresponding handler functions to define the behavior for each new command.
    ---

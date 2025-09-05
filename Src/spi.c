@@ -48,9 +48,9 @@ void spi1_config(void)
 	SPI1->CR1 &= ~(1U << 4); //BR1
 	SPI1->CR1 &= ~(1U << 5); //BR2
 
-	/*set CPOL to 1 & CPHA to 1*/
-	SPI1->CR1 |= (1U << 0); //CPHA
-	SPI1->CR1 |= (1U << 1); //CPOL
+	/*set CPOL to 0 & CPHA to 0*/
+	SPI1->CR1 &= ~(1U << 0); //CPHA
+	SPI1->CR1 &= ~(1U << 1); //CPOL
 
 	/*set to full duplex mode*/
 	SPI1->CR1 &= ~(1U << 10); //RXONLY

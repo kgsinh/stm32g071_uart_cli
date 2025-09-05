@@ -4,6 +4,7 @@
 #include "cli.h"
 #include "uart.h"
 #include "led.h"
+#include "w25qxx.h"
 
 typedef void (*command_func_t)(char *args);
 
@@ -16,10 +17,12 @@ typedef struct
 
 static void cmd_help(char *args);
 static void cmd_led(char *args);
+static void cmd_read_id(char *args);
 
 command_t commands[] = {
 	{"led", cmd_led, "Control the LED: led <on|off>"},
 	{"help", cmd_help, "Show this help message"},
+	{"flash", cmd_read_id, "Read JEDEC ID from W25Qxx flash"},
 	{NULL, NULL, NULL} // Sentinel to mark the end of the array
 };
 
@@ -64,6 +67,16 @@ static void cmd_led(char *args)
 		printf("Invalid action. Use 'led on' or 'led off'.\n\r");
 	}
 
+}
+
+static void cmd_read_id(char *args)
+{
+	w25qxx_jedec_id_t id = w25qxx_read_jedec_id();
+
+
+	// Placeholder for reading JEDEC ID
+	printf("JEDEC ID: Manufacturer: 0x%02X, Memory Type: 0x%02X, Capacity: 0x%02X\n\r",
+	       id.manufacturer_id, id.memory_type, id.capacity);
 }
 
 void process_command(char *cmd)
