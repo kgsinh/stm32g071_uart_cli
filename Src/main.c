@@ -8,33 +8,44 @@
 #include "led.h"
 #include "cli.h"
 #include "spi.h"
+#include "w25qxx.h"
 
 int main(void)
 {
-	memset(command, 0, CMD_SIZE);
+    memset(command, 0, CMD_SIZE);
 
-	UARTinit();
-	led_init();
-	spi1_gpio_init();
-	spi1_config();
+    UARTinit();
+    led_init();
 
-	green_led_off();
-	blue_led_off();
+    // Initialize SPI
+    spi1_gpio_init();
+    spi1_config(); // Now running at 250kHz
 
-	printf("UART CLI Application\n\r");
+    // W25Q64 power-up sequence (needs 10ms typical)
+    printf("W25Q64 Power-up delay...\r\n");
+    systickDelayus(15000); // 15ms power-up time
 
-	while (1)
-	{
-		if (UART_read_cmd())
-		{
-			printf("Received command: %s\n\r", command);
-			process_command(command);
-			memset(command, 0, CMD_SIZE); // Clear command buffer
-		}
-	}
+    // Hardware reset sequence
+    w25qxx_reset();
 
-	return 0;
+    green_led_off();
+    blue_led_off();
+
+    printf("UART CLI Ready. Type 'help' for commands.\r\n");
+
+    while (1)
+    {
+        if (UART_read_cmd())
+        {
+            printf("Received command: %s\n\r", command);
+            process_command(command);
+            memset(command, 0, CMD_SIZE);
+        }
+    }
+
+    return 0;
 }
+
 
 void USART2_IRQHandler(void)
 {

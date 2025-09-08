@@ -2,8 +2,12 @@
 #define SPI_H_
 
 #include "stm32g071xx.h"
+#include "systick.h"
+#include "uart.h"
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 void spi1_gpio_init(void);
 void spi1_config(void);
