@@ -19,13 +19,8 @@ int main(void)
 
     // Initialize SPI
     spi1_gpio_init();
-    spi1_config(); // Now running at 250kHz
-
-    // W25Q64 power-up sequence (needs 10ms typical)
-    printf("W25Q64 Power-up delay...\r\n");
-    systickDelayus(15000); // 15ms power-up time
-
-    // Hardware reset sequence
+    spi1_config();
+    //Hardware reset sequence
     w25qxx_reset();
 
     green_led_off();

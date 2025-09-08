@@ -43,14 +43,18 @@ w25qxx_jedec_id_t w25qxx_read_jedec_id(void)
 {
 	uint8_t cmd = CMD_READ_JEDEC_ID;
 	uint8_t response[3] = {0};
-
     w25qxx_jedec_id_t jedec_id = {0};
 
     spi1_ss_enable();
+
 	/* Send Read JEDEC ID command */
     spi1_tx(&cmd, 1);
+
+    /* Read 3 bytes of JEDEC ID */
     spi1_rx(response, 3);
+
     spi1_ss_disable();
+    systickDelayus(5); // Small delay after operation
 
     jedec_id.manufacturer_id = response[0];
     jedec_id.memory_type = response[1];
